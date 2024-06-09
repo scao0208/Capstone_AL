@@ -39,9 +39,11 @@ class LitAutoTrain(L.LightningModule):
         self.training_step_outputs = []
         self.validation_step_outputs = []
         self.test_step_outputs = []
+        self.steps = 0
+        self.steps_validation = 0
     
-    def forward(self, x):
-        return self.model(x)
+    def forward(self, x, y):
+        return self.model(x, y)
     
     def training_step(self, batch, batch_idx):
         # Batch
@@ -53,7 +55,9 @@ class LitAutoTrain(L.LightningModule):
 
         loss_dict = self.model(x, y)
         loss = sum(loss for loss in loss_dict.values())
-        self.log_dict(loss_dict)
+        # self.log_dict(loss_dict)
+        self.logger.log_metrics(loss_dict, step=self.steps)
+        self.steps += 1
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -83,9 +87,15 @@ class LitAutoTrain(L.LightningModule):
         # val_acc = 0.4 * val_map50 + 0.4 * recall + 0.2 * np.exp(- 1e-2 * uncertainty) 
         
         # self.log('val_acc', val_acc)
-
         # self.log('val_entropy', val_entropy)
+
+
         self.log_dict(val_map)
+        val_map['my_map_50'] = val_map['map_50']
+        self.logger.log_metrics(val_map, step=self.steps_validation)
+        self.steps_validation += 1
+        print(f"steps: {self.steps_validation}")
+
         # return val_acc
         return val_map50
         
