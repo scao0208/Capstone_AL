@@ -1,10 +1,9 @@
 *.log
 *.pth
 __pycache__/
-
-/lightning_logs/
-/tensor_logs/
-/outplot/
+lightning_logs/
+tensor_logs/
+outplot/
 
 bdd100k_det_20_labels_trainval.zip
 bdd100k_ins_seg_labels_trainval.zip
