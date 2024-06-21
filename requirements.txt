@@ -1,0 +1,13 @@
+python>=3.9
+CUDA==12.1
+torch==2.2.1 
+torchvision==0.17.1 
+torchaudio==2.2.1
+opencv-python==4.10.0.82
+lightning==2.2.5
+pycocotools==2.0
+
+tensorboard
+tensorflow
+tqdm
+
