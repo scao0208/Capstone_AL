@@ -21,8 +21,8 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
 train_path = "/home/siyu/Documents/al/scapstone/bdd100k/images/100k/train/"
-# checkpoint_path = "/home/siyu/Documents/al/scapstone/lightning_logs/ckpt/3-bdd-fast-epoch=41-map_50=0.76.ckpt"
-checkpoint_path = "./lightning_logs/ckpt/3-bdd-fast-epoch=59-ratio=00-map_50=0.71.ckpt"
+# checkpoint_path = "./lightning_logs/ckpt/3-bdd-fast-epoch=59-ratio=00-map_50=0.71.ckpt"
+checkpoint_path = "./lightning_logs/ckpt/3-bdd-fast-epoch=47-ratio=00-map_50=0.74.ckpt"
 
 
 print('==> Loading data...')
@@ -103,7 +103,7 @@ def inference():
 
                 s = str(float(map_50)) + '_' + str(img_id[0]) + '_' + str(paths[i]) + "\n"
 
-                with open('./inference_mAP50.txt', 'a') as f:
+                with open('./inference_mAP50_entropy.txt', 'a') as f:
                     f.write(s)
     
 
@@ -111,10 +111,11 @@ def inference():
         
 
 if __name__ == "__main__":
+    CYCLE = 14
     inference()
     writer.close()
 
-    with open('./inference_mAP50.txt', 'r') as f:
+    with open('./inference_mAP50_entropy.txt', 'r') as f:
         scores = f.readlines()
     
     score_1 = []
@@ -134,10 +135,10 @@ if __name__ == "__main__":
     sort_index = np.array(x) # convert to low score first
     
     # Now we get all data sorted in the order of low accuracy 
-    if not os.path.isdir('first_mAP50'):
-        os.mkdir('first_mAP50')
+    if not os.path.isdir('first_mAP50_entropy'):
+        os.mkdir('first_mAP50_entropy')
 
-    for i in range(14):
+    for i in range(CYCLE):
         # sample minibatch from training set pool 
 
         sample5000 = sort_index[i*5000:(i+1)*5000]
@@ -147,10 +148,47 @@ if __name__ == "__main__":
         for jj in sample5000:
             print(score_1[jj])
             # wandb.log({"score": score_1[jj]}, step=)
-        s = './first_mAP50/batch_' + str(i) + '.txt'
+        s = './first_mAP50_entropy/batch_' + str(i) + '.txt'
         for k in sample5000:
             with open(s, 'a') as f:
                 f.write(name_2[k] + '_' + path_3[k] + '\n')
+                
+    for cycle in range(CYCLE):
+        # Define the input file path using the cycle variable
+        input_file_path = f'./first_mAP50_v2/batch_{cycle}.txt'
+
+        if not os.path.isdir("mAP50_id_v2"):
+            os.mkdir("mAP50_id_v2")
+        # Define the output file path
+        output_file_path = f'./mAP50_id_v2/batch_{cycle}.txt'
+
+        # Initialize an empty list to store the extracted parts
+        samples = []
+
+        # Open and read the input file
+        with open(input_file_path, 'r') as f:
+            # Read all lines from the file
+            lines = f.readlines()
+
+            # Process each line
+            for line in lines:
+                # Remove any trailing newline or space characters
+                line = line.strip()
+                # Split the line by "_" and take the first part
+                extracted_part = line.split('_')[0]
+                base_dir = '/home/sycao/Documents/scapstone'
+                result = os.path.relpath(extracted_part, base_dir)
+            
+                # Append the extracted part to the samples list
+                samples.append(result)
+
+        # Write the samples to the output file
+        with open(output_file_path, 'a') as f:
+            for sample in samples:
+                # f.write('./' + sample + '\n') # save the path
+                f.write(sample + '\n') # save the image IDs
+        # Print a message indicating that the process is complete
+        print(f'Samples have been written to {output_file_path}')
     
     
     

@@ -2,10 +2,7 @@ import torch.utils.data
 from src.dataset import BDD100K
 from src.trainingModule import WarmupMultiStepLR
 from torchvision.transforms import PILToTensor
-
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
-
-
 
 import lightning as L
 from lightning.pytorch.callbacks import ModelCheckpoint

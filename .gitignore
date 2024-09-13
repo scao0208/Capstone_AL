@@ -5,5 +5,7 @@ lightning_logs/
 tensor_logs/
 outplot/
 
+100k_images_test.zip
+100k_images_val.zip
+100k_images_train.zip
 bdd100k_det_20_labels_trainval.zip
-bdd100k_ins_seg_labels_trainval.zip
