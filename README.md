@@ -21,7 +21,7 @@ Compared to current DL method, We save nearly 80% images and reach better mAP50 
 ## Sampling Strategy
 In the main task model, I created the entropy strategy to select top 1k samples from unlabeled pool.
 - Entropy: the number of predicted bounding boxes in each image. New metrics to express the prediction uncertainty of samples. 
-![alt text](image.png)
+![alt text](formula.png)
 
 ## Evaluation Metrics
 The mAP is an important indicator we use to observe the degree of uncertainty and unlearnability for samples. Low mAP help to prove that samples are hard to learn.
