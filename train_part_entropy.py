@@ -129,7 +129,7 @@ def train():
     
     dataset = BDD100K(root=train_path, annFile="./bdd100k/labels/det_20/det_train_coco.json", transform=PILToTensor())
     # divide train in to 20% labeled dataset and 80% unlabeled pool dataset
-    train_dataset, _ = torch.utils.data.random_split(dataset=dataset, lengths=[0.5, 0.5], generator=generator) 
+    train_dataset, _ = torch.utils.data.random_split(dataset=dataset, lengths=[0.2, 0.8], generator=generator) 
     # train_dataset, _ = torch.utils.data.random_split(dataset=dataset, lengths=[0.7, 0.3], generator=generator) 
     valid_dataset = BDD100K(root=val_path, annFile="./bdd100k/labels/det_20/det_val_coco.json", transform=PILToTensor())
 

@@ -1,5 +1,6 @@
 *.log
 *.pth
+*.png
 __pycache__/
 lightning_logs/
 tensor_logs/

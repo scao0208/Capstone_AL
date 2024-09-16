@@ -20,14 +20,14 @@ from tqdm import tqdm
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
-train_path = "/home/siyu/Documents/al/scapstone/bdd100k/images/100k/train/"
+train_path = "./bdd100k/images/100k/train/"
 # checkpoint_path = "./lightning_logs/ckpt/3-bdd-fast-epoch=59-ratio=00-map_50=0.71.ckpt"
-checkpoint_path = "./lightning_logs/ckpt/3-bdd-fast-epoch=47-ratio=00-map_50=0.74.ckpt"
+checkpoint_path = "./lightning_logs/entropy_ckpt/last.ckpt"
 
 
 print('==> Loading data...')
 
-trainset = BDD100K(root=train_path, annFile="/home/siyu/Documents/al/scapstone/bdd100k/labels/det_20/det_train_coco.json", transform=transforms.PILToTensor())
+trainset = BDD100K(root=train_path, annFile="./bdd100k/labels/det_20/det_train_coco.json", transform=transforms.PILToTensor())
 
 # For test   
 # trainset, _, _ = torch.utils.data.random_split(dataset=trainset, lengths=[20, 10, trainset.__len__() - 30])

@@ -15,8 +15,6 @@ from torch.utils.data import DataLoader
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
 
 
-
-
 def collection(data):
     images = []
     targes = []
